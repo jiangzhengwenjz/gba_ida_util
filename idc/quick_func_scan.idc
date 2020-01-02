@@ -17,11 +17,10 @@ static main(void)
     while ((temp = NextFunction(lastFuncEa)) != BADADDR)
         lastFuncEa = temp;
     lastFuncEa = GetFunctionAttr(lastFuncEa, FUNCATTR_END);
-    for (ea = FindCode(FUNCTIONS_START, SEARCH_DOWN); ea != BADADDR && ea < ((FUNCTIONS_END == -1) ? lastFuncEa : FUNCTIONS_END); ea = FindCode(ea, SEARCH_DOWN))
+    for (ea = FindCode(FUNCTIONS_START, SEARCH_DOWN); ea != BADADDR && ea < ((FUNCTIONS_END == -1) ? lastFuncEa : FUNCTIONS_END); ea = temp > ea ? temp : FindCode(ea, SEARCH_DOWN)) // thanks laqieer from github
     {
         if (GetFunctionName(ea) == "" && MakeFunction(ea, BADADDR))
             Message("Address: 0x%x FuncName: %s\n", ea, GetFunctionName(ea));
-        if ((temp = GetFunctionAttr(ea, FUNCATTR_END)) > ea) // thanks laqieer from github
-            ea = temp;
+        temp = GetFunctionAttr(ea, FUNCATTR_END);
     }
 }
