@@ -17,8 +17,17 @@ static main(void)
     while ((temp = NextFunction(lastFuncEa)) != BADADDR)
         lastFuncEa = temp;
     lastFuncEa = GetFunctionAttr(lastFuncEa, FUNCATTR_END);
-    for (ea = FindCode(FUNCTIONS_START, SEARCH_DOWN); ea != BADADDR && ea < ((FUNCTIONS_END == -1) ? lastFuncEa : FUNCTIONS_END); ea = temp > ea ? temp : FindCode(ea, SEARCH_DOWN)) // thanks laqieer from github
+    for (ea = FindCode(FUNCTIONS_START, SEARCH_DOWN);
+         ea != BADADDR
+             && ea < ((FUNCTIONS_END == -1) ? lastFuncEa : FUNCTIONS_END);
+         ea = temp > ea ? temp : FindCode(ea, SEARCH_DOWN)) // thanks laqieer from github
     {
+        if (ea & 2) // non_word_aligned? 
+        {
+            // assert(!(ea & 1));
+            if (Word(ea) == 0x46C0) // nop
+                ea += 2;
+        }
         if (GetFunctionName(ea) == "" && MakeFunction(ea, BADADDR))
             Message("Address: 0x%x FuncName: %s\n", ea, GetFunctionName(ea));
         temp = GetFunctionAttr(ea, FUNCATTR_END);
