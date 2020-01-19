@@ -66,6 +66,10 @@ static main()
                     Message("%s\n", line[index : temp]);
                     MakeNameEx(ea, line[index : temp], SN_NOCHECK);
                 }
+                else
+                {
+                    Message("\n");
+                }
             }
             else
             {

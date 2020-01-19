@@ -7,8 +7,8 @@
 #include <idc.idc>
 #include "include/defines.h"
 
-#define FUNCTIONS_START 0x8000000
-#define FUNCTIONS_END -1
+#define FUNCTIONS_START 0x80003EC
+#define FUNCTIONS_END 0x809B324
 
 static main(void)
 {
@@ -26,7 +26,7 @@ static main(void)
         {
             // assert(!(ea & 1));
             if (Word(ea) == 0x46C0) // nop
-                ea += 2;
+                ea = ea + 2;
         }
         if (GetFunctionName(ea) == "" && MakeFunction(ea, BADADDR))
             Message("Address: 0x%x FuncName: %s\n", ea, GetFunctionName(ea));
