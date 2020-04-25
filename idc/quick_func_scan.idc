@@ -7,8 +7,9 @@
 #include <idc.idc>
 #include "include/defines.h"
 
-#define FUNCTIONS_START 0x80003EC
-#define FUNCTIONS_END 0x809B324
+#define FUNCTIONS_START 0x80001CC
+#define FUNCTIONS_END 0x815BD84
+//#define ROM 0x2000000
 
 static main(void)
 {
@@ -25,7 +26,7 @@ static main(void)
         if (ea & 2) // non_word_aligned? 
         {
             // assert(!(ea & 1));
-            if (Word(ea) == 0x46C0) // nop
+            if (Word(ea) == 0x46C0 || Word(ea) == 0x0000) // nop || .align 2, 0
                 ea = ea + 2;
         }
         if (GetFunctionName(ea) == "" && MakeFunction(ea, BADADDR))
